@@ -3,33 +3,34 @@ package com.love2code.example.cruddemo.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="instructor_detail")
+@Table(name = "instructor_detail")
 public class InstructorDetail {
     //annotate the class as entity and map to db table
 
-    //define fields
-    //annotate fields with db column names
+
 
 
     //refers to InstructorDetail property in Instructor class
-    @OneToOne(mappedBy = "instructorDetail",cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @OneToOne(mappedBy = "instructorDetail", cascade =
+            {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Instructor instructor;
 
 
-
+    //define fields
+    //annotate fields with db column names
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private int id;
-    @Column(name="youtube_channel")
+    @Column(name = "youtube_channel")
     private String youtubeChannel;
-    @Column(name="hobby")
+    @Column(name = "hobby")
     private String hobby;
 
 
     //define constructors
 
-    public InstructorDetail(){
+    public InstructorDetail() {
 
     }
 

@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name="instructor")
-public class Instructor {
+@Table(name="student")
+public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,21 +21,18 @@ public class Instructor {
     private String email;
 
 
-    // set up mapping to InstructorDetail entity
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="instructor_detail_id")
-    private InstructorDetail instructorDetail;
-
-    @OneToMany(cascade =  {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},
-            mappedBy = "instructor",fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY,
+                cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH})
+    @JoinTable(name="course_student",
+            joinColumns = @JoinColumn(name= "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id"))
     private List<Course>courses;
 
-
-    public Instructor(){
+    public Student(){
 
     }
 
-    public Instructor(String firstName, String lastName, String email) {
+    public Student(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -73,24 +70,6 @@ public class Instructor {
         this.email = email;
     }
 
-    public InstructorDetail getInstructorDetail() {
-        return instructorDetail;
-    }
-
-    public void setInstructorDetail(InstructorDetail instructorDetail) {
-        this.instructorDetail = instructorDetail;
-    }
-
-    @Override
-    public String toString() {
-        return "Instructor{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", instructorDetail=" + instructorDetail +
-                '}';
-    }
     public List<Course> getCourses() {
         return courses;
     }
@@ -99,13 +78,22 @@ public class Instructor {
         this.courses = courses;
     }
 
-    //add convenience method for bi-directional relationship
+    // add convenience method
 
-    public void add(Course course){
-        if(courses==null){
+    public void addCourse (Course course){
+        if(courses == null){
             courses = new ArrayList<>();
         }
         courses.add(course);
-        course.setInstructor(this);
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }
