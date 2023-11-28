@@ -10,6 +10,7 @@ import java.util.List;
 public class Course {
 
     @Id
+    //helping with autoincrement in sql
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
